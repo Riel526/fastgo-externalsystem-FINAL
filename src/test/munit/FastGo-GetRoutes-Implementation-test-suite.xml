@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="FastGo-GetRoutes-Implementation-test-suite.xml" />
+	<munit:test name="FastGo-GetRoutes-Implementation-test-suite-FastGo-GetRoutes-ImplementationSub_FlowTest" doc:id="f7c20da7-0216-43ff-a02e-67d398d43aa0" description="Test">
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy" doc:id="3d7c3c50-407d-4fa9-a872-ac3b73c63b8b" processor="db:select">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Select" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="7fc0858b-28cd-4fdf-8be0-5bb1b48f1146" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="Database_Config" attributeName="config-ref" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert-that doc:name="Assert that" doc:id="6bf7dd8b-f797-409f-a265-7e7b7cd60fc9" expression="#[payload]" is="#[MunitTools::nullValue()]" message="DB ROUTES CONFIG IS NOT NULL BEFORE CALL"/>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert-that doc:name="Assert that" doc:id="68ca88ca-fd56-4257-9c36-34e0c85af4a5" is="#[MunitTools::notNullValue()]" expression="#[payload]" message="DB ROUTES CONFIG IS NULL AFTER CALL"/>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit-tools:spy doc:name="SpyTransform" doc:id="d1ecf4dd-a085-46cb-8154-dd91f97d2dbc" processor="ee:transform" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Transform Message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a67e48f4-62e6-42ee-9434-d32d67c6a905" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert-that doc:name="Assert that" doc:id="1ca78ffb-c79a-4796-967d-032bd3dc10a1" message="TRANSFORM MESSAGE NULL BEFORE CALL" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert-that doc:name="Assert that" doc:id="5833a90e-a77c-4518-b6d5-71e4e4a0eeb3" message="TRANSFORM MESSAGE NULL AFTER CALL" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+				</munit-tools:after-call>
+			</munit-tools:spy>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to FastGo-GetRoutes-ImplementationSub_Flow" doc:id="d37c0a32-40eb-4d3e-971f-258e917ac75b" name="FastGo-GetRoutes-ImplementationSub_Flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="b2d0e5e3-1e77-4a43-93ce-94b6843f9a56" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Transform Message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="a67e48f4-62e6-42ee-9434-d32d67c6a905" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="6d1ae9fc-e639-4643-9b5e-934350e98e32" is='#[MunitTools::equalTo(&#10;    [{&#10;        "ORIGINLOCATION": "BEN-SG",&#10;        "COMPANYNAME": "FastGo",&#10;        "DESTINATIONLOCATION": "KLG-MY"&#10;	},&#10;	{&#10;        "ORIGINLOCATION": "KLG-MY",&#10;        "COMPANYNAME": "FastGo",&#10;        "DESTINATIONLOCATION": "BEN-SG"&#10;    }&#10;&#10;	])]' expression="#[payload]" message="DID NOT RETURN THE EXPECTED VALUE"/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

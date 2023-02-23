@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="FastGo-GetSchedules-Implementation-test-suite.xml" />
+	<munit:test name="FastGo-GetSchedules-Implementation-test-suite-FastGo-GetSchedules-ImplementationSub_FlowTest" doc:id="9db2a6e2-77fb-49ba-9f11-3e26591d4875" description="Test">
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy" doc:id="b02e13c4-aae7-4118-851c-05df7d4021f1" processor="sub-flow" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="FastGo-GetSchedules-ImplementationSub_Flow" attributeName="name" />
+					<munit-tools:with-attribute whereValue="10fa8161-471e-471e-84cb-eafc7d846be1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert-that doc:name="Assert that" doc:id="9b6fb7c6-e5e0-4031-9ed9-08c4f9da158c" message="DB SCHEDULES CONFIG IS NOT NULL BEFORE CALL" expression="#[payload]" is="#[MunitTools::nullValue()]" />
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert-that doc:name="Assert that" doc:id="35166fa5-5915-4afd-baf4-12fb43847169" message="DB SCHEDULES CONFIG IS NULL AFTER CALL" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit-tools:spy doc:name="SpyTransform" doc:id="71c464a1-30dc-4b7a-9d21-00d3c7f8250e" processor="ee:transform" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Transform Message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="02b4a617-205f-44e2-ab6f-c3de91dc0d91" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert-that doc:name="Assert that" doc:id="26b132f5-ed0c-47a0-be60-520e4e6aaa36" message="TRANSFORM MESSAGE NULL BEFORE CALL" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert-that doc:name="Assert that" doc:id="9bf0f255-73d5-434a-b78d-8775782ef3bb" message="TRANSFORM MESSAGE NULL AFTER CALL" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+				</munit-tools:after-call>
+			</munit-tools:spy>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to FastGo-GetSchedules-ImplementationSub_Flow" doc:id="f933d937-1f7e-4542-9002-4e264688e6fc" name="FastGo-GetSchedules-ImplementationSub_Flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:verify-call doc:name="Verify call" doc:id="2d61b689-5045-4462-bc0e-9af6c423489e" processor="ee:transform" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Transform Message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="02b4a617-205f-44e2-ab6f-c3de91dc0d91" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="3781b72e-5f74-49a2-95ef-ba9561389b15" message="DID NOT RETURN THE EXPECTED VALUE" expression="#[payload]" is='#[MunitTools::equalTo(&#10;    [{&#10;        "TOLOCATION": "BEN-SG",&#10;        "DEPARTUREDATETIME": "2021-03-22T12:12:12.090Z",&#10;        "FROMLOCATION": "KLG-MY",&#10;        "COMPANYNAME": "FastGo",&#10;        "AVAILABLESEAT": "40"&#10;    },&#10;    {&#10;        "TOLOCATION": "KLG-MY",&#10;        "DEPARTUREDATETIME": "2021-03-22T12:12:12.090Z",&#10;        "FROMLOCATION": "BEN-SG",&#10;        "COMPANYNAME": "FastGo",&#10;        "AVAILABLESEAT": "40"&#10;    }])]' />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

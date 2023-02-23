@@ -1,0 +1,4 @@
+%dw 2.0
+
+type auto_2ebea221_585d_4def_b6d7_272fc94110ae_Output_Variables_transactionId = Null
+

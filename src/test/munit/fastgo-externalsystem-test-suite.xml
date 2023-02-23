@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="fastgo-externalsystem-test-suite.xml" />
+	<munit:test name="fastgo-externalsystem-test-suite-fastgo-externalsystemFlowTest" doc:id="59045faa-c39b-4ff0-a81c-8f648e0b60b0" description="Test">
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy" doc:id="9f2da4e9-1abc-45f7-9ada-0a26e5adf888" processor="ee:transform" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="Transform Message" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="d83cb013-facc-4cc9-a329-5a3e516df2cc" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert-that doc:name="Assert that" doc:id="1a00b8de-3ad1-4608-9e0f-6a57ce5da42c" message="TRANSACTION ID IS NULL BEFORE CALL" expression="#[payload]" is="#[MunitTools::notNullValue()]" />
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert-that doc:name="Assert that" doc:id="23b32055-54ed-4e5f-9c64-7696bc06ea26" message="TRANSACTION ID IS NULL AFTER CALL" is="#[MunitTools::notNullValue()]" expression="#[payload]" />
+				</munit-tools:after-call>
+			</munit-tools:spy>
+		</munit:behavior>
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="512b1976-0e5b-4cdc-94da-5ccabe52d847" >
+				<munit:attributes value='#["headers": "transactionId": "asdasd"]' />
+				<munit:variables >
+					<munit:variable key="transactionId" value="asdasd" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to fastgo-externalsystemFlow" doc:id="bd3c652c-1dd7-44ce-b595-1ad180b226df" name="fastgo-externalsystemFlow"/>
+		</munit:execution>
+	</munit:test>
+
+
+</mule>
